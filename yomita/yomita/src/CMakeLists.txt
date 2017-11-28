@@ -19,6 +19,10 @@ elseif(DEFINED target)
   message(FATAL_ERROR "invalid target")
 endif()
 
+if (NOT "$ENV{MSYSTEM}" STREQUAL "")
+  add_definitions("-fno-threadsafe-statics")
+endif()
+
 set(sources
   benchmark.cpp
   bitboard.cpp
@@ -71,5 +75,9 @@ set(sources
   usioption.cpp
 )
 add_executable(Yomita-by-clang ${sources})
-target_link_libraries(Yomita-by-clang stdc++fs pthread)
 
+if (NOT "$ENV{MSYSTEM}" STREQUAL "")
+  target_link_libraries(Yomita-by-clang -static pthread)
+else()
+  target_link_libraries(Yomita-by-clang stdc++fs pthread)
+endif()

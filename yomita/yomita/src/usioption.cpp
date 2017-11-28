@@ -29,8 +29,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <filesystem>
 
 #else
+#ifndef __MINGW64__
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem ;
+
+#else
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
+
+#endif
 
 #endif
 
@@ -45,6 +53,8 @@ std::string evalSaveDir() { return path("evalsave", std::string(EVAL_TYPE)); }
 std::vector<std::string> evalFiles()
 {
     std::vector<std::string> filenames;
+
+#ifndef __MINGW64__
 
 #ifdef _MSC_VER
     for (std::tr2::sys::directory_iterator it(evalDir());
@@ -67,7 +77,27 @@ std::vector<std::string> evalFiles()
 #endif
             filenames.push_back(path(evalDir(), target.filename().string()));
     }
-    
+
+#else
+    DIR *dir;
+    struct dirent *pp;
+
+    if ((dir = opendir(evalDir().c_str())) == NULL) {
+      filenames.push_back("none");
+      return filenames;
+    }
+    while ((pp = readdir(dir)) != NULL) {
+        struct stat ss;
+        if ((stat(pp->d_name, &ss)) != 0) {
+            continue;
+        }
+
+        if ((ss.st_mode & S_IFMT) == S_IFREG) {
+            filenames.push_back(path(evalDir(), pp->d_name));
+        }
+    }
+    closedir(dir);
+#endif
     if (filenames.empty())
         filenames.push_back("none");
 

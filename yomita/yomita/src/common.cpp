@@ -30,7 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 #ifdef _MSC_VER
 #include <windows.h>
-#endif
 
 extern "C"
 {
@@ -39,6 +38,7 @@ extern "C"
     typedef bool(*fun2_t)(USHORT, PGROUP_AFFINITY);
     typedef bool(*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 }
+#endif
 #endif
 
 #include <vector>
