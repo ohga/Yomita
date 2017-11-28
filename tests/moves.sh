@@ -10,6 +10,8 @@ trap 'error ${LINENO}' ERR
 echo "moves testing started"
 
 (
+  echo "setoption name EvalDir value eval/kppt/20171108063515"
+  echo "setoption name ProgressDir value progress/0.104809"
   echo "isready";
   echo "usinewgame";
   echo "position startpos moves 7g7f";

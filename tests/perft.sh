@@ -15,6 +15,8 @@ keys=("nodes" "captures" "promotions" "checks" "checkmates");
 for nn in {1..5}; do
   echo "----- perft $nn START_POS -----";
   ./Yomita-by-clang << END_OF_USI > result.txt
+setoption name EvalDir value eval/kppt/20171108063515
+setoption name ProgressDir value progress/0.104809
 isready
 position startpos
 perft $nn
