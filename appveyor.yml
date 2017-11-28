@@ -1,0 +1,23 @@
+platform: x64
+
+environment:
+  matrix:
+    - TARGET: avx2
+    - TARGET: sse42
+    - TARGET: learn
+    - TARGET: learn-sse42
+
+install:
+  - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\local\bin;C:\msys64\usr\bin;C:\msys64\bin;%PATH%
+  - set MSYSTEM=MINGW64
+  - bash -lc "pacman --noconfirm -S base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang mingw-w64-x86_64-cmake git unzip"
+build_script:
+  - bash -lc "cd $APPVEYOR_BUILD_FOLDER; mkdir build && env && echo $TARGET && cd build && cmake -Dtarget=$TARGET -G 'Unix Makefiles' ../yomita/yomita/src && make -j `nproc`"
+
+before_test:
+  - bash -lc "cd $APPVEYOR_BUILD_FOLDER; cp build/Yomita-by-clang.exe tests/ && mv build/Yomita-by-clang.exe build/Yomita-by-clang-${TARGET}.exe && cd tests/ && ./all.sh sse42"
+
+artifacts:
+  - path: build/Yomita-by-clang-${TARGET}.exe
+    name: nightly_build
+

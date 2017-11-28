@@ -1,5 +1,6 @@
 # 読み太
  [![Build Status](https://travis-ci.org/TukamotoRyuzo/Yomita.svg?branch=master)](https://travis-ci.org/TukamotoRyuzo/Yomita)
+ [![Build status](https://ci.appveyor.com/api/projects/status/adf5h4ka9u93163j/branch/master?svg=true)](https://ci.appveyor.com/project/ohga/yomita/branch/master)
 
 読み太はUSIプロトコル準拠の将棋エンジンです。  
 主にチェスエンジンのStockfishをベースとし、  
